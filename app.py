@@ -19,13 +19,18 @@ SPEECH_REGION = os.getenv("AZURE_SPEECH_REGION")
 
 import html
 
-def synthesize_speech(text: str, output_filepath: str, voice: str, speed: str):
+def synthesize_speech(text: str, output_filepath: str, voice_param: str, speed: str):
     speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SPEECH_REGION)
     # Output format set to MP3
     speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Audio16Khz32KBitRateMonoMp3)
     
     audio_config = speechsdk.audio.AudioOutputConfig(filename=output_filepath)
     speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+    
+    # Parse voice and style
+    parts = voice_param.split("|")
+    voice = parts[0]
+    style = parts[1] if len(parts) > 1 else "none"
     
     # Map speed to prosody rate
     speed_map = {
@@ -39,12 +44,16 @@ def synthesize_speech(text: str, output_filepath: str, voice: str, speed: str):
     # Safely escape text for XML/SSML
     escaped_text = html.escape(text)
     
-    # Create SSML string to control voice and speed
-    ssml = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+    # Wrap text with style if requested
+    if style != "none":
+        inner_ssml = f'<mstts:express-as style="{style}">\n            <prosody rate="{rate}">\n                {escaped_text}\n            </prosody>\n        </mstts:express-as>'
+    else:
+        inner_ssml = f'<prosody rate="{rate}">\n            {escaped_text}\n        </prosody>'
+    
+    # Create SSML string to control voice, style, and speed
+    ssml = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
     <voice name="{voice}">
-        <prosody rate="{rate}">
-            {escaped_text}
-        </prosody>
+        {inner_ssml}
     </voice>
 </speak>"""
     
@@ -67,7 +76,7 @@ async def read_root(request: Request):
 async def convert_to_speech(
     text: str = Form(None), 
     file: UploadFile = File(None),
-    voice: str = Form("en-US-JennyNeural"),
+    voice: str = Form("en-US-JennyNeural|chat"),
     speed: str = Form("medium")
 ):
     if not SPEECH_KEY or not SPEECH_REGION:
