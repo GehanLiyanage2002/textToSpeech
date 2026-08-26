@@ -1,6 +1,7 @@
 import os
 import uuid
 import asyncio
+import tempfile
 import azure.cognitiveservices.speech as speechsdk
 from fastapi import FastAPI, Form, File, UploadFile, Request, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse
@@ -11,7 +12,6 @@ load_dotenv()
 
 app = FastAPI()
 
-os.makedirs("temp", exist_ok=True)
 templates = Jinja2Templates(directory="templates")
 
 SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
@@ -96,7 +96,7 @@ async def convert_to_speech(
         raise HTTPException(status_code=400, detail="No text provided.")
 
     filename = f"{uuid.uuid4()}.mp3"
-    filepath = os.path.join("temp", filename)
+    filepath = os.path.join(tempfile.gettempdir(), filename)
 
     success, error_msg = await asyncio.to_thread(synthesize_speech, content, filepath, voice, speed)
 
