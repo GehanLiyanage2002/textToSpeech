@@ -98,15 +98,33 @@
             <div class="form-group">
                 <label for="voice">Voice Type</label>
                 <select id="voice" name="voice" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
-                    <option value="en-US-JennyNeural|chat">Smooth Girl (Natural Chat)</option>
-                    <option value="en-US-AriaNeural|newscast">Female Announcer (Professional)</option>
-                    <option value="en-US-AriaNeural|cheerful">Female (Friendly & Cheerful)</option>
-                    <option value="en-US-JaneNeural|none">Female (Natural Storytelling)</option>
-                    <option value="en-US-GuyNeural|newscast">Male Announcer (Professional)</option>
-                    <option value="en-US-JasonNeural|none">Male (Casual & Natural)</option>
-                    <option value="en-US-DavisNeural|chat">Deep Male (Conversational/Background)</option>
-                    <option value="en-US-AnaNeural|none">Little Girl</option>
-                    <option value="en-US-KevinNeural|none">Little Boy</option>
+                    <optgroup label="US English - Natural & Conversational">
+                        <option value="en-US-JennyNeural|chat">Smooth Girl (Natural Chat)</option>
+                        <option value="en-US-JaneNeural|none">Female (Natural Storytelling)</option>
+                        <option value="en-US-NancyNeural|chat">Female (Expressive & Friendly)</option>
+                        <option value="en-US-JasonNeural|none">Male (Casual & Natural)</option>
+                        <option value="en-US-TonyNeural|none">Male (Relaxed & Conversational)</option>
+                    </optgroup>
+                    
+                    <optgroup label="US English - Professional & Announcer">
+                        <option value="en-US-AriaNeural|newscast">Female Announcer (Professional)</option>
+                        <option value="en-US-GuyNeural|newscast">Male Announcer (Professional)</option>
+                        <option value="en-US-DavisNeural|chat">Deep Male (Conversational/Background)</option>
+                        <option value="en-US-SteffanNeural|none">Male (Clear & Authoritative)</option>
+                    </optgroup>
+
+                    <optgroup label="Asian Accents (English)">
+                        <option value="en-IN-NeerjaNeural|none">Indian Female (Natural & Clear)</option>
+                        <option value="en-IN-PrabhatNeural|none">Indian Male (Professional)</option>
+                        <option value="en-SG-LunaNeural|none">Singaporean Female (Friendly)</option>
+                        <option value="en-SG-WayneNeural|none">Singaporean Male (Clear)</option>
+                        <option value="en-PH-RosaNeural|none">Filipina Female (Casual)</option>
+                    </optgroup>
+
+                    <optgroup label="Kids">
+                        <option value="en-US-AnaNeural|none">Little Girl</option>
+                        <option value="en-US-KevinNeural|none">Little Boy</option>
+                    </optgroup>
                 </select>
             </div>
 
